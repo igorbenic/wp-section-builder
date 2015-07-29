@@ -41,6 +41,11 @@ The Bootstrap Classes and HTML inserted by Builder class (HomeBootstrap):
 
 ![HTML is created and CSS is linked from CDN](img/wp-home-section-sample-page-bootstrap.JPG)
 
+An example of a custom sidebar Content to show that Bootstrap Classes and HTML works:
+
+![Example of a custom sidebar content.](img/wp-home-section-sample-page-bootstrap2.JPG)
+
+
 
 #TODO
 
