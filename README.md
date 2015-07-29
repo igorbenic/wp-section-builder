@@ -29,17 +29,17 @@ Builders decide how a layout is displayed while Sections are displaying the layo
 
 Custom Post Type for the Section:
 
-[A new section](img/wp-home-section-admin.JPG)
+![A new section](img/wp-home-section-admin.JPG)
 
 
 A section created on the front part for the dummy sample page in WordPress:
 
-[Section on a single page](img/wp-home-section-sample-page.JPG)
+![Section on a single page](img/wp-home-section-sample-page.JPG)
 
 
 The Bootstrap Classes and HTML inserted by Builder class (HomeBootstrap):
 
-[HTML is created and CSS is linked from CDN](img/wp-home-section-sample-page-bootstrap.JPG)
+![HTML is created and CSS is linked from CDN](img/wp-home-section-sample-page-bootstrap.JPG)
 
 
 #TODO
