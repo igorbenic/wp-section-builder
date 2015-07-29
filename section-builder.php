@@ -11,8 +11,6 @@
  * Text Domain:       section-builder
 
  */
-
-
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 
@@ -78,25 +76,3 @@ class SectionBuilderStarter {
 $newSectionBuilder = new SectionBuilderStarter();
 
 $homeSection = new HomeSection("homesection", "Home Section", "Home Section", "Home Sections", new HomeBootstrap());
-
-
-//$homeMetaBox = new HomeMetaBox("home_meta_box", $homeSection, "SideBar Content", "high", "advanced" );
-//
-
-
-
-/*function add_to_footer_of_content($content) {
-
-	global $post;
-
-	
-	$builder = new HomeBootstrap($post->ID);
-
-    $content .= $builder->appendSections($content);
-
-    return $content;
-}
-
-add_filter( 'the_content', 'add_to_footer_of_content' );*/
-
-
