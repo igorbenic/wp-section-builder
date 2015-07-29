@@ -84,12 +84,18 @@ Class HomeBootstrap implements Builder {
 	      	    $this->contentID = $post->ID;
 
 	      }
+
+	      if($post->ID == $this->contentID){
 	      
 	      
-	      $this->getLoop();
+		      $this->getLoop();
 
 
-	      return $this->appendSections($content);
+		      return $this->appendSections($content);
+
+	      }
+
+	      return $content;
     }
     
     public function builderStyle(){
@@ -199,7 +205,16 @@ Class HomeBootstrap implements Builder {
      * Get the main content
      */
     public function getMainContent(){
-      return "Bla";
+
+        $output = "";
+
+        $output .= "<h2>".get_the_title()."</h2>";
+
+        
+        $output .= apply_filters('the_content',get_the_content());
+
+
+        return $output;
     }
     
     /**
