@@ -1,53 +1,65 @@
 <?php
 Namespace SectionBuilder;
+use SectionBuilder\Builder;
 use SectionBuilder\SectionBuilder;
-use SectionBuilder\Metabox\Metabox;
-use SectionBuilder\Metabox\DefaultMetaBox\DefaultMetaBox;
+use SectionBuilder\Metabox\DefaultMetaBox;
+
 
 abstract class Section implements SectionBuilder {
 	/**
-	 * Section slug
+	 * 
 	 * @var String
 	 */
-	private $slug;
+	protected $slug;
 
     /**
 	 * Section Name
 	 * @var String
 	 */
-	private $name;
+	protected $name;
 
     /**
 	 * Section Name Singular
 	 * @var String
 	 */
-	private $singular;
+	protected $singular;
 
     /**
 	 * Section Name Plural
 	 * @var String
 	 */
-	private $plural;
+	protected $plural;
     
     /**
 	 * Text domain
 	 * @var String
 	 */
-	private $textdomain;
+	protected $textdomain;
     
     /**
 	 * Section Labels
 	 * @var Array
 	 */
-	private $labels;
+	protected $labels;
 
     /**
 	 * Section Arguments
 	 * @var Array
 	 */
-	private $arguments;
+	protected $arguments;
 
-    
+    /**
+     * Builder holder
+     * @var Object
+     */
+    public $builder;
+
+    /**
+     * Default Meta box Object
+     * @var Object
+     */
+    public $defaultMetaBox;
+
 
 	/**
 	 * Setting the labels array
@@ -71,7 +83,20 @@ abstract class Section implements SectionBuilder {
       );
 	}
     
+    /**
+     * Set the slug
+     * @param string $newSlug the new slug
+     */
+    public function setSlug($newSlug){
+    	$this->slug = $newSlug;
+    }
 
+    /**
+     * Get the slug
+     */
+    public function getSlug(){
+    	return $this->slug;
+    }
 
     /**
 	 * Getting the labels array
@@ -94,6 +119,7 @@ abstract class Section implements SectionBuilder {
 		return $this->textdomain;
 	}
     
+
     
     /**
 	 * Setting the arguments array
@@ -107,7 +133,7 @@ abstract class Section implements SectionBuilder {
 		    'show_ui'            => true,
 		    'show_in_menu'       => true,
 		    'query_var'          => true,
-		    'rewrite'            => array( 'slug' => $this->slug ),
+		    'rewrite'            => array( 'slug' => $this->getSlug() ),
 		    'capability_type'    => 'post',
 		    'has_archive'        => true,
 		    'hierarchical'       => false,
@@ -123,30 +149,54 @@ abstract class Section implements SectionBuilder {
 	 * Getting the arguments array
 	 */
 	public function getArguments(){
+		
 		return $this->arguments;
 	}
 
 	/**
-	 *  Creating the section
+	 *  Creating the section. After registering the post type we enqueue the builders` style and also add the builder output to the conten
 	 */
 	public function createSection(){
 
 		register_post_type( $this->getPostType(), $this->getArguments() );
+        
+       
 
-		$this->createDefaultMetaBox();
+		add_action( 'wp_enqueue_scripts', array($this->builder, 'builderStyle') );
+
+		add_filter( 'the_content', array($this->builder, 'constructBuilder') );
+
+		
 
 		
 	}
+    /**
+     * Constructor
+     * @param string  $slug                  The slug, used also as post_type
+     * @param string  $name                  Name of the section
+     * @param string  $singular              Singular name
+     * @param string  $plural                Plural name
+     * @param Builder $builder               A new Builder
+     * @param string  $textdomain            Textdomain for the section
+     * @param array   $additional_parameters Additinal parameters that can be set to override the defaults
+     */
+	public function __construct($slug, $name, $singular, $plural, Builder $builder,  $textdomain = "", $additional_parameters = array()){
 
-	public function __construct($slug, $name, $singular, $plural, $textdomain = "", $additional_parameters = array()){
-
-		$this->slug = $slug;
+		$this->setSlug($slug);
 
 		$this->name = $name;
 
 		$this->singular = $singular;
 
 		$this->plural = $plural;
+
+		$this->builder = $builder;
+
+		$this->createDefaultMetaBox();
+
+		$this->builder->post_type = $slug;
+
+        $this->builder->meta_key = $this->defaultMetaBox->key;
 
 		if( "" != $textdomain ){
 
@@ -167,9 +217,14 @@ abstract class Section implements SectionBuilder {
 
 	}
 
+    /**
+     * Creating the default metabox and storing it in a variable
+     * TODO: More Flexibility | Setting it at the instantation of Section
+     */
 	public function createDefaultMetaBox(){
 
-		new DefaultMetaBox( "pageMeta",  "Default MetaBox", $this , "Default Metabox");
+		$this->defaultMetaBox = new DefaultMetaBox( "sb_pageID", "Default MetaBox", $this , "Default Metabox");
+
 
 	}
 

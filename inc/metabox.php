@@ -1,36 +1,73 @@
 <?php 
 
-Namespace SectionBuilder\Metabox;
+Namespace SectionBuilder;
 use SectionBuilder\SectionBuilder;
+
 /** 
- * Metabox Class.
+ * Metabox Abstract Class.
  */
 abstract class MetaBox {
     
-    private $name = "";
+    /**
+     * Name of the metabox
+     * @var string
+     */
+    protected $name = "";
 
-    private $slug = "";
+    /**
+     * Slug of the metabox. Can be used as ID.
+     * @var string
+     */
+    protected $slug = "";
 
-    private $description = "";
+    /**
+     * Description of the metabox
+     * @var string
+     */
+    protected $description = "";
 
-    private $textdomain = "";
+    /**
+     * Textdomain of the metabox
+     * @var string
+     */
+    protected $textdomain = "";
 
-    private $post_type = "";
+    /**
+     * Post type slug
+     * @var string
+     */
+    protected $post_type = "";
 
-    private $position = "high";
+    /**
+     * Position of the metabox
+     * @var string
+     */
+    protected $position = "high";
 
-    private $type = "advanced";
+    /**
+     * Type of the metabox
+     * @var string
+     */
+    protected $type = "advanced";
+
+    /**
+     * Meta Key
+     * @var string
+     */
+    public $key = "";
 
 	/**
 	 * Hook into the appropriate actions when the class is constructed.
 	 */
-	public function __construct($slug, $name, SectionBuilder $post, $description, $position = "high", $type= "advanced") {
+	public function __construct( $slug, $name, SectionBuilder $post, $description, $position = "high", $type= "advanced") {
 
-		if ( is_admin() ) {
+		
 
 			$this->name = $name;
 
 		    $this->slug = $slug;
+
+		    $this->key = "sb_".$slug."_metabox_value";
 
 			$this->post_type = $post->getPostType();
 
@@ -41,7 +78,8 @@ abstract class MetaBox {
 			$this->description = $description;
 
 			$this->textdomain = $post->getTextDomain();
-
+        
+        if ( is_admin() ) {
 
 		    add_action( 'load-post.php',     array(&$this, 'startMetaBox') );
 		    add_action( 'load-post-new.php', array(&$this, 'startMetaBox') );
@@ -55,13 +93,19 @@ abstract class MetaBox {
 		
 	}
 
+    /**
+     * Start the metabox. Adds the metabox to the post/page and includes it in the save method which is called on save
+     */
 	public function startMetaBox(){
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
 		add_action( 'save_post', array( $this, 'save' ) );
 	}
 
-
-     public function getSlug(){
+    /**
+     * Get the Slug
+     * @return String The name of the slug. Used like an ID where needed.
+     */
+    public function getSlug(){
 		return $this->slug;
 	}
 	/**

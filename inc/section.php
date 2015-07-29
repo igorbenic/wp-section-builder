@@ -2,7 +2,9 @@
 Namespace SectionBuilder;
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-
+/**
+ * SectionBuilder Interface
+ */
 
 interface SectionBuilder {
 	

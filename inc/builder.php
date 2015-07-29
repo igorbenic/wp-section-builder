@@ -1,13 +1,17 @@
 <?php 
 
-Namespace Builder;
+Namespace SectionBuilder;
 
+/**
+ * Interface for Builder
+ */
 Interface Builder {
     
+   
     /**
      * Render Function
      */
-    public function render();
+    public function renderSections();
     
     /**
      * Get the main content
