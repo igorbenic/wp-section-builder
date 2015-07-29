@@ -1,6 +1,6 @@
 <?php 
 
-Namespace Metabox;
+Namespace SectionBuilder\Metabox;
 use SectionBuilder\SectionBuilder;
 /** 
  * Metabox Class.
@@ -8,6 +8,8 @@ use SectionBuilder\SectionBuilder;
 abstract class MetaBox {
     
     private $name = "";
+
+    private $slug = "";
 
     private $description = "";
 
@@ -22,13 +24,13 @@ abstract class MetaBox {
 	/**
 	 * Hook into the appropriate actions when the class is constructed.
 	 */
-	public function __construct($name, SectionBuilder $post, $description, $position = "high", $type= "advanced") {
+	public function __construct($slug, $name, SectionBuilder $post, $description, $position = "high", $type= "advanced") {
 
 		if ( is_admin() ) {
-		    add_action( 'load-post.php',     array(&$this, 'startMetaBox') );
-		    add_action( 'load-post-new.php', array(&$this, 'startMetaBox') );
 
-		    $this->name = $name;
+			$this->name = $name;
+
+		    $this->slug = $slug;
 
 			$this->post_type = $post->getPostType();
 
@@ -39,6 +41,12 @@ abstract class MetaBox {
 			$this->description = $description;
 
 			$this->textdomain = $post->getTextDomain();
+
+
+		    add_action( 'load-post.php',     array(&$this, 'startMetaBox') );
+		    add_action( 'load-post-new.php', array(&$this, 'startMetaBox') );
+
+		    
 		}
 
 
@@ -53,7 +61,9 @@ abstract class MetaBox {
 	}
 
 
-
+     public function getSlug(){
+		return $this->slug;
+	}
 	/**
 	 * Adds the meta box container.
 	 */

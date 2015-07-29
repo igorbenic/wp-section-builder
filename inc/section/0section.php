@@ -1,7 +1,8 @@
 <?php
 Namespace SectionBuilder;
 use SectionBuilder\SectionBuilder;
-use Metabox\Metabox;
+use SectionBuilder\Metabox\Metabox;
+use SectionBuilder\Metabox\DefaultMetaBox\DefaultMetaBox;
 
 abstract class Section implements SectionBuilder {
 	/**
@@ -132,6 +133,8 @@ abstract class Section implements SectionBuilder {
 
 		register_post_type( $this->getPostType(), $this->getArguments() );
 
+		$this->createDefaultMetaBox();
+
 		
 	}
 
@@ -161,6 +164,12 @@ abstract class Section implements SectionBuilder {
 
 		add_action('init', array(&$this, 'createSection'));
 		
+
+	}
+
+	public function createDefaultMetaBox(){
+
+		new DefaultMetaBox( "pageMeta",  "Default MetaBox", $this , "Default Metabox");
 
 	}
 
