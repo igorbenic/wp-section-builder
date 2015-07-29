@@ -6,7 +6,7 @@ If you are fed on Drag & Drop grids and you want to control the actual layout fo
 
 ## Sections
 
-Sections are actually the post types you create to use
+Sections are actually the post types you create to use. 
 
 ## Metaboxes
 
@@ -18,8 +18,17 @@ Builders are the classes with methods to build your layout.
 
 In the example you can see a Home Section builder where the HomeBootstrap class extends the Builder class and implements a way to generate Bootstrap 3 layout.
 
-TO-DO:
+#Usage
 
--   Add a default metabox to chain different section on a page
--   Add query searcher for the metabox
+Creating the Section with the Builder, you will create a post type with a metabox connected to the select element with pages listed. 
+
+Builders decide how a layout is displayed while Sections are displaying the layout with their content on the bottom of the page.
+
+
+#TODO
+
+- Add more flexibility to default meta box creation
+- Add a method to add more metaboxes
+- Add a method to enqueue scripts with builders
+
 
