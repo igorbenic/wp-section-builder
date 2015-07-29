@@ -49,6 +49,7 @@ An example of a custom sidebar Content to show that Bootstrap Classes and HTML w
 
 #TODO
 
+- Create a completed Get Started Guide with code examples
 - Create a better autoloading function to include all classes and subclasses
 - Add more flexibility to default meta box creation
 - Add a method to add more metaboxes
